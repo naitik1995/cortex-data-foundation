@@ -35,9 +35,12 @@ from common.py_libs import test_harness
 #TODO: Remove these. Only here to pass presubmit for intial changes.
 #pylint: disable=unused-variable
 
+#CUSTOM ENHANCEMENT - added parameter upload_tmp to the function to not allow uploading of temporary files 
 def _simple_process_and_upload(k9_id: str, k9_dir: str, jinja_dict: dict,
                               target_bucket: str, bq_client: bigquery.Client,
                               data_source = "k9", dataset_type="processing", upload_tmp: bool = False):
+#CUSTOM ENHANCEMENT - end of addition 
+
     """Process and upload simple (traditional) K9.
 
     Recursively processes all files in k9_dir,
@@ -92,6 +95,8 @@ def _simple_process_and_upload(k9_id: str, k9_dir: str, jinja_dict: dict,
                                  f"{dataset_type}/{k9_id}")
         logging.info("Copying generated files to %s",
                      target_path)
+        
+#CUSTOM ENHANCEMENT - changes to incorporate the custom parameter upload_tmp
          # TODO: Shift to leveraging a cloud storage client
         gsutil_command = [
             "gsutil",
@@ -110,6 +115,7 @@ def _simple_process_and_upload(k9_id: str, k9_dir: str, jinja_dict: dict,
                 target_path
             ]
         subprocess.check_call(gsutil_command)
+#CUSTOM ENHANCEMENT - end of addition for changes 
 
 def load_k9s_manifest(manifest_file:str) -> dict:
     """Load K9 Manifest and format into dict.

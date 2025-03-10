@@ -27,12 +27,14 @@ import airflow
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.google.cloud.operators.bigquery import \
     BigQueryInsertJobOperator
-#CUSTOM CHANGES - adding extra libraries for dag dependency handling 
+#CUSTOM ENHANCEMENTS - adding extra libraries for dag dependency handling 
 from airflow.sensors.external_task_sensor import ExternalTaskSensor
 import json 
 from croniter import croniter
 import pytz
+#CUSTOM ENHANCEMENTS - end of addition
 
+#CUSTOM ENHANCEMENTS- begin of adding new logic to handle dag dependencies
 #read json data
 def read_json_file(filename):
     try:
@@ -125,7 +127,8 @@ def execution_delta_dependency(logical_date, **kwargs):
     except Exception as e1: 
         print("Exception ", e1)
         return None
-    
+#CUSTOM ENHANCEMENTS - end of addition
+
 # BigQuery Job Labels - converts generated string to dict
 # If string is empty, assigns empty dict
 _BQ_LABELS = ast.literal_eval("${runtime_labels_dict}" or "{}")
@@ -146,6 +149,7 @@ with airflow.DAG("${dag_full_name}",
                  tags=${tags}) as dag:
     start_task = EmptyOperator(task_id="start")
 
+#CUSTOM ENHANCEMENTS - begin of changes for dag dependency handling
 # add external task sensor for the dependent tasks    
     external_task_sensors = []
     try:
@@ -168,6 +172,7 @@ with airflow.DAG("${dag_full_name}",
         print("Exception ", e2)
         no_ext_task = EmptyOperator(task_id="no_ext_task")
         external_task_sensors.append(no_ext_task)
+#CUSTOM ENHANCEMENTS - end of addition
 
     refresh_table = BigQueryInsertJobOperator(
             task_id="refresh_table",
@@ -182,4 +187,6 @@ with airflow.DAG("${dag_full_name}",
     stop_task = EmptyOperator(task_id="stop")
 
 # add external task sensors as the dependent tasks
+#CUSTOM ENHANCEMENTS - begin of addition to add external task sensor dependency task
     start_task >> external_task_sensors >> refresh_table >> stop_task
+#CUSTOM ENHANCEMENTS - end of addition

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## CUSTOM ENHANCEMENTS FOR PARTITIONING - check the partition_flg value 
+
 data_to_replicate:
 {% if sql_flavour.upper() == 'S4' %}
   - base_table: acdoca

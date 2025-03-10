@@ -1,0 +1,5 @@
+Steps to add the GSD custom code in the new version of cortex 
+1. Check for all occurences of CUSTOM ENHANCEMENT in the main_copy branch and copy the changes to the main branch 
+2. In the folder Cortex 6.0, check for the 2 files saved as backup. Create these files in the below locations in the main branch 
+1. cdc_partition_sql_template.sql : src/SAP/SAP_CDC/src/template_sql/cdc_partition_template.sql 
+2. dag-set.json: src/SAP/SAP_REPORTING/common/materializer/templates/dag-set.json
