@@ -16,7 +16,7 @@ WITH
       --##CORTEX-CUSTOMER Modify the exchange rate type based on your requirement
       AND ExchangeRateType_KURST = 'M'
   ),
-  -- Computing some metrics separately to avoid consuming too many resources in the next step
+  -- Computing some metrics separately to avoid consuming too many resources in the next step.
   MaterialCostAndPrice AS (
     SELECT DISTINCT
       StockWeeklySnapshots.MaterialNumber_MATNR,
